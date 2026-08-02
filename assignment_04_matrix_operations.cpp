@@ -65,3 +65,102 @@
 #include <string>
 using namespace std;
 
+void readMatrix(int matrix[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrix[i][j];
+        }
+    }
+}
+
+void printMatrix(const int matrix[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            cout << setw(5) << matrix[i][j];
+        }
+        cout << endl;
+    }
+}
+
+void transposeMatrix(const int matrix[10][10], int transposed[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            transposed[j][i] = matrix[i][j];
+        }
+    }
+}
+
+void addMatrices(const int mat1[10][10], const int mat2[10][10], int result[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            result[i][j] = mat1[i][j] + mat2[i][j];
+        }
+    }
+}
+
+void multiplyMatrices(const int mat1[10][10], const int mat2[10][10], int result[10][10], int rowsA, int colsA, int colsB) {
+    for (int i = 0; i < rowsA; ++i) {
+        for (int j = 0; j < colsB; ++j) {
+            result[i][j] = 0;
+            for (int k = 0; k < colsA; ++k) {
+                result[i][j] += mat1[i][k] * mat2[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    int rows, cols;
+    
+    cout << "Enter number of rows: ";
+    cin >> rows;
+    cout << "Enter number of columns: ";
+    cin >> cols;
+
+    if (rows <= 0 || cols <= 0 || rows > 10 || cols > 10) {
+        cout << "Error: Dimensions must be between 1 and 10." << endl;
+        return 1;
+    }
+
+    int matrixA[10][10];
+    cout << "Enter elements for Matrix A:" << endl;
+    readMatrix(matrixA, rows, cols);
+
+    cout << "\nOriginal Matrix A:" << endl;
+    printMatrix(matrixA, rows, cols);
+
+    int transposed[10][10];
+    transposeMatrix(matrixA, transposed, rows, cols);
+    cout << "\nTransposed Matrix:" << endl;
+    printMatrix(transposed, cols, rows);
+
+    cout << "\nEnter elements for Matrix B (same size " << rows << "x" << cols << "):" << endl;
+    int matrixB[10][10];
+    readMatrix(matrixB, rows, cols);
+
+    int sumMatrix[10][10];
+    addMatrices(matrixA, matrixB, sumMatrix, rows, cols);
+    cout << "\nSum Matrix (A + B):" << endl;
+    printMatrix(sumMatrix, rows, cols);
+
+    int colsC;
+    cout << "\nEnter number of columns for Matrix C (rows must be " << cols << "): ";
+    cin >> colsC;
+
+    if (colsC <= 0 || colsC > 10) {
+        cout << "Error: Columns must be between 1 and 10." << endl;
+        return 1;
+    }
+
+    cout << "Enter elements for Matrix C (" << cols << "x" << colsC << "):" << endl;
+    int matrixC[10][10];
+    readMatrix(matrixC, cols, colsC);
+
+    int productMatrix[10][10];
+    multiplyMatrices(matrixA, matrixC, productMatrix, rows, cols, colsC);
+    cout << "\nProduct Matrix (A x C):" << endl;
+    printMatrix(productMatrix, rows, colsC);
+
+    return 0;
+}
