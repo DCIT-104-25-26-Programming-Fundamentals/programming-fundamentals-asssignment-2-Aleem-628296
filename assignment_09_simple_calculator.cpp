@@ -73,3 +73,111 @@
 #include <cmath>
 using namespace std;
 
+double add(double a, double b) {
+    return a + b;
+}
+
+double subtract(double a, double b) {
+    return a - b;
+}
+
+double multiply(double a, double b) {
+    return a * b;
+}
+
+bool divide(double a, double b, double &result) {
+    if (b == 0) return false;
+    result = a / b;
+    return true;
+}
+
+// RENAMED to avoid collision with std::modulus
+bool calculateModulus(double a, double b, double &result) {
+    if (b == 0) return false;
+    result = fmod(a, b);
+    return true;
+}
+
+double exponentiate(double a, double b) {
+    return pow(a, b);
+}
+
+int main() {
+    int choice;
+    double num1, num2, result;
+
+    while (true) {
+        cout << "============================" << endl;
+        cout << "     SIMPLE CALCULATOR" << endl;
+        cout << "============================" << endl;
+        cout << "1. Addition" << endl;
+        cout << "2. Subtraction" << endl;
+        cout << "3. Multiplication" << endl;
+        cout << "4. Division" << endl;
+        cout << "5. Modulus" << endl;
+        cout << "6. Exponentiation" << endl;
+        cout << "7. Quit" << endl;
+        cout << "Select an operation (1-7): ";
+
+        if (!(cin >> choice)) {
+            cout << "Error: Invalid input." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
+
+        if (choice == 7) {
+            cout << "Goodbye!" << endl;
+            break;
+        }
+
+        if (choice < 1 || choice > 7) {
+            cout << "Error: Invalid choice. Please enter 1-7." << endl;
+            continue;
+        }
+
+        cout << "Enter first number : ";
+        if (!(cin >> num1)) {
+            cout << "Error: Invalid input." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
+
+        cout << "Enter second number: ";
+        if (!(cin >> num2)) {
+            cout << "Error: Invalid input." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
+
+        cout << fixed << setprecision(2);
+
+        if (choice == 1) {
+            cout << "Result: " << num1 << " + " << num2 << " = " << add(num1, num2) << endl;
+        } else if (choice == 2) {
+            cout << "Result: " << num1 << " - " << num2 << " = " << subtract(num1, num2) << endl;
+        } else if (choice == 3) {
+            cout << "Result: " << num1 << " * " << num2 << " = " << multiply(num1, num2) << endl;
+        } else if (choice == 4) {
+            if (divide(num1, num2, result)) {
+                cout << "Result: " << num1 << " / " << num2 << " = " << result << endl;
+            } else {
+                cout << "Error: Cannot divide by zero." << endl;
+            }
+        } else if (choice == 5) {
+            // CALLING THE RENAMED FUNCTION
+            if (calculateModulus(num1, num2, result)) {
+                cout << "Result: " << num1 << " % " << num2 << " = " << result << endl;
+            } else {
+                cout << "Error: Cannot calculate modulus with zero." << endl;
+            }
+        } else if (choice == 6) {
+            cout << "Result: " << num1 << " ^ " << num2 << " = " << exponentiate(num1, num2) << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
